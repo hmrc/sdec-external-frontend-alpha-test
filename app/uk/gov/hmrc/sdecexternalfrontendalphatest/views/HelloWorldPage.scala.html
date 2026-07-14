@@ -1,0 +1,12 @@
+@this(layout: Layout)
+
+@()(implicit request: RequestHeader, messages: Messages)
+
+@layout(pageTitle = Some("sdec-external-frontend-alpha-test")) {
+    <h1 class="govuk-heading-xl">sdec-external-frontend-alpha-test</h1>
+    <p class="govuk-body">@{messages("service.text")}</p>
+}
+
+@{
+    //$COVERAGE-OFF$
+}
