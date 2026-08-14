@@ -17,7 +17,7 @@ docker run --rm -d -p 27017:27017 --name mongo percona/percona-server-mongodb:6.
 Start `<SERVICE_MANAGER_PROFILE>` services as follows:
 
 ```bash
-sm2 --start SDEC_EXTERNAL_FRONTEND
+sm2 --start SDEC_EXTERNAL_FRONTEND_ALPHA_TEST
 ```
 
 ## Tests

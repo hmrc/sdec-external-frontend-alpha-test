@@ -41,11 +41,15 @@ object ThreadReferencePage extends BasePage {
   val threadReferenceErrorLocator: By = By.xpath("//*[@id=\"main-content\"]/div/div/form/div[1]/div/div/ul/li[1]/a")
   val threadRefSuccessful: By         = By.xpath("//*[@id=\"main-content\"]/div/div/div/div")
   val threadRefUnsuccessful: By       = By.cssSelector("#thread-reference-error")
+  val pageNotFound: By                = By.xpath("/html/body/div/main/div/div")
 
   private val wait = new WebDriverWait(driver, Duration.ofSeconds(20))
 
   def getCaptionText: String =
     wait.until(ExpectedConditions.visibilityOfElementLocated(headingLocator)).getText.trim
+
+  def getPageNotFoundText: String =
+    wait.until(ExpectedConditions.visibilityOfElementLocated(pageNotFound)).getText.trim
 
   def getThreadReferenceText: String =
     wait.until(ExpectedConditions.visibilityOfElementLocated(threadReferenceLocator)).getText.trim
