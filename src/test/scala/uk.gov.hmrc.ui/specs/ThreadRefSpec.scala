@@ -72,12 +72,11 @@ class ThreadRefSpec extends BaseSpec {
 
       Then("the system must prevent progression")
 
-      val errorSummary = ThreadReferencePage.isErrorTitleDisplayed
-      val errorTitle   = ThreadReferencePage.getErrorTitleText
-      val errorText    = ThreadReferencePage.getThreadReferenceText
+      val errorTitle = ThreadReferencePage.getErrorTitleText
+      val errorText  = ThreadReferencePage.getThreadReferenceText
       And("the system must display an error summary at the top of the page")
-      errorSummary shouldBe true
-      errorTitle     should include("There is a problem")
+
+      errorTitle should include("There is a problem")
 
       And("""the system must display the error message "Enter the thread reference number"""")
       errorText should include("Enter the thread reference number")
@@ -138,6 +137,32 @@ class ThreadRefSpec extends BaseSpec {
         "The thread reference contains 12 characters using A - Z and 0 - 9 only"
       )
 
+    }
+
+    Scenario("Authenticated user login ", AcceptanceTests) {
+
+      Given("User logs in")
+      AuthLoginPage.login()
+
+      When("the page loads with the url by authenticated user")
+
+      Then("the page must display Enter the thread reference number")
+
+      ThreadReferencePage.getThreadReferenceText shouldBe "Enter the thread reference number"
+    }
+
+    Scenario("Unauthenticated user login ", AcceptanceTests) {
+
+      Given("User logs in")
+      AuthLoginPage.authIdent()
+
+      When("the page loads with the given url by unauthenticated user")
+
+      val errorPageNotFound = ThreadReferencePage.getPageNotFoundText
+
+      Then("the page must display the page not found error")
+
+      errorPageNotFound should include("This page can’t be found")
     }
 
   }

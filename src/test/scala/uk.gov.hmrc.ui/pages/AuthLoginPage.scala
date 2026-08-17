@@ -27,8 +27,9 @@ object AuthLoginPage extends BrowserDriver with BasePage {
 
   private val wait = new WebDriverWait(driver, Duration.ofSeconds(10))
 
-  val url: String         = s"${TestConfiguration.url("auth-login-stub")}/gg-sign-in"
-  val frontEndUrl: String = TestConfiguration.url("sdec-external-frontend")
+  val url: String                = s"${TestConfiguration.url("auth-login-stub")}/gg-sign-in"
+  val frontEndUrl: String        = TestConfiguration.url("sdec-external-frontend")
+  val threadReferenceUrl: String = "http://localhost:4502/sdec"
 
   object Fields {
     val credId: By      = By.id("authorityId")
@@ -36,7 +37,8 @@ object AuthLoginPage extends BrowserDriver with BasePage {
   }
 
   private val redirectUrls: Map[String, String] = Map(
-    "sdec-external-frontend" -> frontEndUrl
+    "sdec-external-frontend" -> frontEndUrl,
+    "sdec-thread-reference"  -> threadReferenceUrl
   )
 
   private def resolveRedirect(page: String): String =
@@ -53,4 +55,11 @@ object AuthLoginPage extends BrowserDriver with BasePage {
     sendKeys(Fields.redirectUrl, resolveRedirect("sdec-external-frontend"))
     continue()
   }
+
+  def authIdent(
+  ): Unit =
+    navigateTo(threadReferenceUrl)
+
+  def getPageTitle: String = driver.getTitle()
+
 }
