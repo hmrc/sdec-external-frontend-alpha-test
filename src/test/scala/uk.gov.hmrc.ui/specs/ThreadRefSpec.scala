@@ -33,30 +33,27 @@ class ThreadRefSpec extends BaseSpec {
       AuthLoginPage.login()
 
       When("the Enter thread reference page loads")
+      ThreadReferencePage.getThreadRefPageName         should include("Share Files Securely with HMRC")
+      ThreadReferencePage.selectAcceptCookiesButton()
+      ThreadReferencePage.isThreadRefButtonDisplayed shouldBe true
+      ThreadReferencePage.isThreadRefButtonEnabled   shouldBe true
+      ThreadReferencePage.selectThreadRefButton()
 
       Then("the system must display the input field and continue button")
-
-      ThreadReferencePage.getThreadReferenceText shouldBe "Enter the thread reference number"
-
-      val inputDisplayed  = ThreadReferencePage.isThreadReferenceInputDisplayed
-      val buttonDisplayed = ThreadReferencePage.isContinueButtonDisplayed
-      val buttonEnabled   = ThreadReferencePage.isContinueButtonEnabled
-      val buttonText      = ThreadReferencePage.getContinueButtonText
-      val captionText     = ThreadReferencePage.getCaptionText
-
-      inputDisplayed shouldBe true
+      ThreadReferencePage.getThreadReferenceText          shouldBe "Enter the thread reference number"
+      ThreadReferencePage.isThreadReferenceInputDisplayed shouldBe true
 
       And("the system must display the service caption")
-      captionText shouldBe "Share Files Securely with HMRC"
+      ThreadReferencePage.getCaptionText shouldBe "Share Files Securely with HMRC"
 
       And("the system must display a continue button")
-      buttonDisplayed shouldBe true
+      ThreadReferencePage.isContinueButtonDisplayed shouldBe true
 
       And("the button must be selectable")
-      buttonEnabled shouldBe true
+      ThreadReferencePage.isContinueButtonEnabled shouldBe true
 
       And("the button must follow GOV.UK Design System standards")
-      buttonText shouldBe "Continue"
+      ThreadReferencePage.getContinueButtonText shouldBe "Continue"
     }
 
     Scenario("Empty field validation", AcceptanceTests) {
@@ -65,21 +62,16 @@ class ThreadRefSpec extends BaseSpec {
       AuthLoginPage.login()
 
       When("the user navigates to the thread reference page")
+      ThreadReferencePage.selectThreadRefButton()
 
       And("the user clicks Continue without entering a value")
-
       ThreadReferencePage.selectContinueButton()
 
-      Then("the system must prevent progression")
-
-      val errorTitle = ThreadReferencePage.getErrorTitleText
-      val errorText  = ThreadReferencePage.getThreadReferenceText
-      And("the system must display an error summary at the top of the page")
-
-      errorTitle should include("There is a problem")
+      Then("the system must display an error summary at the top of the page")
+      ThreadReferencePage.getErrorTitleText should include("There is a problem")
 
       And("""the system must display the error message "Enter the thread reference number"""")
-      errorText should include("Enter the thread reference number")
+      ThreadReferencePage.getThreadReferenceText should include("Enter the thread reference number")
     }
 
     Scenario("Invalid Format", AcceptanceTests) {
@@ -88,14 +80,13 @@ class ThreadRefSpec extends BaseSpec {
       AuthLoginPage.login()
 
       When("the user navigates to the thread reference page")
+      ThreadReferencePage.selectThreadRefButton()
       ThreadReferencePage.enterThreadReference("ABCD")
 
       And("the user clicks Continue button")
-
       ThreadReferencePage.selectContinueButton()
 
       Then("the system must prevent progression and display error message")
-
       ThreadReferencePage.isThreadRefUnsuccessful should include(
         "The thread reference contains 12 characters using A - Z and 0 - 9 only"
       )
@@ -108,10 +99,10 @@ class ThreadRefSpec extends BaseSpec {
       AuthLoginPage.login()
 
       When("the user navigates to the thread reference page and keys the thread reference number")
+      ThreadReferencePage.selectThreadRefButton()
       ThreadReferencePage.enterThreadReference("123456ABCDEF")
 
       And("the user clicks Continue button")
-
       ThreadReferencePage.selectContinueButton()
 
       Then("the system must validate the manual entry with 12 characters")
@@ -125,14 +116,13 @@ class ThreadRefSpec extends BaseSpec {
       AuthLoginPage.login()
 
       When("the user navigates to the thread reference page and keys the thread reference number")
+      ThreadReferencePage.selectThreadRefButton()
       ThreadReferencePage.enterThreadReference("ABCD$%&cv")
 
       And("the user clicks Continue button")
-
       ThreadReferencePage.selectContinueButton()
 
       Then("the system must validate the entry with special characters and case sensitive")
-
       ThreadReferencePage.isThreadRefUnsuccessful should include(
         "The thread reference contains 12 characters using A - Z and 0 - 9 only"
       )
@@ -145,24 +135,22 @@ class ThreadRefSpec extends BaseSpec {
       AuthLoginPage.login()
 
       When("the page loads with the url by authenticated user")
+      ThreadReferencePage.selectThreadRefButton()
 
       Then("the page must display Enter the thread reference number")
-
       ThreadReferencePage.getThreadReferenceText shouldBe "Enter the thread reference number"
     }
 
     Scenario("Unauthenticated user login ", AcceptanceTests) {
 
-      Given("User logs in")
+      Given("User logs in with the given url")
       AuthLoginPage.authIdent()
 
       When("the page loads with the given url by unauthenticated user")
 
-      val errorPageNotFound = ThreadReferencePage.getPageNotFoundText
+      Then("the url must redirect the authorisation page")
 
-      Then("the page must display the page not found error")
-
-      errorPageNotFound should include("This page can’t be found")
+      ThreadReferencePage.getRedirectPageText should include("Authority Wizard")
     }
 
   }
