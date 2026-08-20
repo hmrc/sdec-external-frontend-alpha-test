@@ -20,6 +20,7 @@ import org.openqa.selenium.support.ui.WebDriverWait
 import org.openqa.selenium.{By, WebDriver}
 import uk.gov.hmrc.ui.conf.TestConfiguration
 import uk.gov.hmrc.ui.driver.BrowserDriver
+import org.openqa.selenium.JavascriptExecutor
 
 import java.time.Duration
 
@@ -29,7 +30,7 @@ object AuthLoginPage extends BrowserDriver with BasePage {
 
   val url: String                = s"${TestConfiguration.url("auth-login-stub")}/gg-sign-in"
   val frontEndUrl: String        = TestConfiguration.url("sdec-external-frontend")
-  val threadReferenceUrl: String = "http://localhost:4502/sdec"
+  val threadReferenceUrl: String = "http://localhost:4502/sdec-alpha"
 
   object Fields {
     val credId: By      = By.id("authorityId")
@@ -57,9 +58,13 @@ object AuthLoginPage extends BrowserDriver with BasePage {
   }
 
   def authIdent(
-  ): Unit =
+  ): Unit = {
+    val jsExecutor = driver.asInstanceOf[JavascriptExecutor]
+    driver.manage().deleteAllCookies()
+    jsExecutor.executeScript("window.localStorage.clear();")
+    jsExecutor.executeScript("window.sessionStorage.clear();")
+    driver.navigate().refresh()
     navigateTo(threadReferenceUrl)
-
-  def getPageTitle: String = driver.getTitle()
+  }
 
 }

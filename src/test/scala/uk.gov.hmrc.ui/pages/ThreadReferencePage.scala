@@ -16,8 +16,6 @@
 
 package uk.gov.hmrc.ui.pages
 
-import org.openqa.selenium.devtools.v135.page.Page
-import org.openqa.selenium.support.ui.WebDriverWait
 import org.openqa.selenium.{By, JavascriptExecutor, WebDriver, WebElement}
 import org.scalatest.matchers.should.Matchers
 import uk.gov.hmrc.selenium.component.PageObject
@@ -41,18 +39,24 @@ object ThreadReferencePage extends BasePage {
   val threadReferenceErrorLocator: By = By.xpath("//*[@id=\"main-content\"]/div/div/form/div[1]/div/div/ul/li[1]/a")
   val threadRefSuccessful: By         = By.xpath("//*[@id=\"main-content\"]/div/div/div/div")
   val threadRefUnsuccessful: By       = By.cssSelector("#thread-reference-error")
-  val pageNotFound: By                = By.xpath("/html/body/div/main/div/div")
+  val redirectPage: By                = By.xpath("//*[@id=\"main-content\"]/div/div/h1")
+  val threadRefButton: By             = By.cssSelector("#main-content > div > div > a:nth-child(2)")
+  val threadRefPageName: By           = By.xpath("//*[@id=\"main-content\"]/div/div/h1")
+  val acceptCookiesButton: By         = By.name("cookies")
 
   private val wait = new WebDriverWait(driver, Duration.ofSeconds(20))
 
   def getCaptionText: String =
     wait.until(ExpectedConditions.visibilityOfElementLocated(headingLocator)).getText.trim
 
-  def getPageNotFoundText: String =
-    wait.until(ExpectedConditions.visibilityOfElementLocated(pageNotFound)).getText.trim
+  def getRedirectPageText: String =
+    wait.until(ExpectedConditions.visibilityOfElementLocated(redirectPage)).getText.trim
 
   def getThreadReferenceText: String =
     wait.until(ExpectedConditions.visibilityOfElementLocated(threadReferenceLocator)).getText.trim
+
+  def getThreadRefPageName: String =
+    wait.until(ExpectedConditions.visibilityOfElementLocated(threadRefPageName)).getText.trim
 
   def getThreadReferenceInput: WebElement =
     wait.until(ExpectedConditions.visibilityOfElementLocated(threadReferenceInputLocator))
@@ -72,6 +76,28 @@ object ThreadReferencePage extends BasePage {
 
   def getContinueButton: WebElement =
     wait.until(ExpectedConditions.visibilityOfElementLocated(continueButtonLocator))
+
+  def getAcceptCookiesButton: WebElement =
+    wait.until(ExpectedConditions.visibilityOfElementLocated(acceptCookiesButton))
+
+  def getThreadRefButton: WebElement =
+    wait.until(ExpectedConditions.visibilityOfElementLocated(threadRefButton))
+
+  def isThreadRefButtonDisplayed: Boolean =
+    driver.findElements(threadRefButton).asScala.nonEmpty &&
+      getThreadRefButton.isDisplayed
+
+  def isThreadRefButtonEnabled: Boolean =
+    getThreadRefButton.isEnabled
+
+  def getThreadRefButtonText: String =
+    getThreadRefButton.getText.trim
+
+  def selectThreadRefButton(): Unit =
+    getThreadRefButton.click()
+
+  def selectAcceptCookiesButton(): Unit =
+    getAcceptCookiesButton.click()
 
   def isContinueButtonDisplayed: Boolean =
     driver.findElements(continueButtonLocator).asScala.nonEmpty &&
