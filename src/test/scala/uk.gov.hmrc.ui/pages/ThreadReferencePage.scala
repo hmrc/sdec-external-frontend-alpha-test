@@ -43,9 +43,9 @@ object ThreadReferencePage extends BasePage {
   val threadRefButton: By             = By.cssSelector("#main-content > div > div > a:nth-child(2)")
   val threadRefPageName: By           = By.xpath("//*[@id=\"main-content\"]/div/div/h1")
   val acceptCookiesButton: By         = By.name("cookies")
-  val externalUserNameLocator: By     = By.xpath("//*[@id=\"main-content\"]/div/div/div/div/h1")
-  val messageLocator: By              = By.xpath("//*[@id=\"main-content\"]/div/div/div/div/ol/li/div/p")
-  val createdDateLocator: By          = By.xpath("//*[@id=\"main-content\"]/div/div/div/div/ol/li/time")
+  val externalUserNameLocator: By     = By.cssSelector("#main-content > div > div > div > div > h1")
+  val messageLocator: By              = By.cssSelector("#main-content > div > div > div > div > ol > li > div > p")
+  val createdDateLocator: By          = By.cssSelector("#main-content > div > div > div > div > ol > li > time")
 
   private val wait = new WebDriverWait(driver, Duration.ofSeconds(20))
 
