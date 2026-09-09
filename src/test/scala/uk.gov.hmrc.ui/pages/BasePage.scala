@@ -16,7 +16,7 @@
 
 package uk.gov.hmrc.ui.pages
 
-import org.openqa.selenium.support.ui.{ExpectedConditions, FluentWait, Wait}
+import org.openqa.selenium.support.ui.{FluentWait, Wait}
 import org.openqa.selenium.{By, JavascriptExecutor, WebDriver}
 import org.scalatest.matchers.should.Matchers
 import uk.gov.hmrc.selenium.component.PageObject
@@ -29,13 +29,6 @@ import scala.jdk.CollectionConverters.*
 trait BasePage extends Matchers with PageObject {
 
   val submitButtonId: By = By.id("submit-top")
-
-  private def fluentWait(timeoutSeconds: Long): Wait[WebDriver] =
-    new FluentWait[WebDriver](Driver.instance)
-      .withTimeout(Duration.ofSeconds(timeoutSeconds))
-      .pollingEvery(Duration.ofMillis(200))
-      .ignoring(classOf[org.openqa.selenium.StaleElementReferenceException])
-      .ignoring(classOf[org.openqa.selenium.NoSuchElementException])
 
   def continue(locator: By = submitButtonId): Unit = {
     assertLocatorPresent(locator)

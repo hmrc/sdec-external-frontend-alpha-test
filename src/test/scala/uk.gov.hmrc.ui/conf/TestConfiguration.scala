@@ -19,10 +19,10 @@ package uk.gov.hmrc.ui.conf
 import com.typesafe.config.{Config, ConfigFactory}
 
 object TestConfiguration {
-  val config: Config        = ConfigFactory.load()
-  val env: String           = config.getString("environment")
+  val config:        Config = ConfigFactory.load()
+  val env:           String = config.getString("environment")
   val defaultConfig: Config = config.getConfig("local")
-  val envConfig: Config     = config.getConfig(env).withFallback(defaultConfig)
+  val envConfig:     Config = config.getConfig(env).withFallback(defaultConfig)
 
   def url(service: String): String = {
     val host = env match {
