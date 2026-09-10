@@ -100,14 +100,13 @@ class ThreadRefSpec extends BaseSpec {
 
       When("the user navigates to the thread reference page and keys the thread reference number")
       ThreadReferencePage.selectThreadRefButton()
-//    Once updated values from stub are available belwo part will be updated
-//      ThreadReferencePage.enterThreadReference("123456ABCDEF")
-//
-//      And("the user clicks Continue button")
-//      ThreadReferencePage.selectContinueButton()
-//
-//      Then("the system must validate the manual entry with 12 characters")
-//      ThreadReferencePage.isThreadRefSuccessful should include("THREAD-001")
+      ThreadReferencePage.enterThreadReference("THREAD1000AA")
+
+      And("the user clicks Continue button")
+      ThreadReferencePage.selectContinueButton()
+
+      Then("the system must validate the manual entry with 12 characters")
+      ThreadReferencePage.isThreadRefSuccessful should include("THREAD1000AA")
 
     }
 
@@ -152,6 +151,58 @@ class ThreadRefSpec extends BaseSpec {
       Then("the url must redirect the authorisation page")
 
       ThreadReferencePage.getRedirectPageText should include("Authority Wizard")
+    }
+
+    Scenario(
+      "External user logs in, provides thread reference number and validates details in thread view",
+      AcceptanceTests
+    ) {
+
+      Given("User logs in")
+      AuthLoginPage.login()
+
+      When("the user navigates to the thread reference page and keys the thread reference number")
+      ThreadReferencePage.selectThreadRefButton()
+      ThreadReferencePage.enterThreadReference("THREAD1000AA")
+
+      And("the user clicks Continue button")
+      ThreadReferencePage.selectContinueButton()
+
+      Then("the system must validate the manual entry with 12 characters")
+      ThreadReferencePage.isThreadRefSuccessful should include("THREAD1000AA")
+
+      And("the system must validate the name of external user")
+      ThreadReferencePage.getExternalUserNameText should include("John Smith")
+
+      And("the system must validate the message for external user")
+      ThreadReferencePage.getMessageText should include("Enter default response message")
+
+    }
+
+    Scenario(
+      "External user logs in, provides thread reference number and validates missing data in thread view",
+      AcceptanceTests
+    ) {
+
+      Given("User logs in")
+      AuthLoginPage.login()
+
+      When("the user navigates to the thread reference page and keys the thread reference number")
+      ThreadReferencePage.selectThreadRefButton()
+      ThreadReferencePage.enterThreadReference("THREAD2000BB")
+
+      And("the user clicks Continue button")
+      ThreadReferencePage.selectContinueButton()
+
+      Then("the system must validate the manual entry with 12 characters")
+      ThreadReferencePage.isThreadRefSuccessful should include("THREAD2000BB")
+
+      And("the system must validate the name of external user")
+      ThreadReferencePage.getExternalUserNameText should include("Name not available")
+
+      And("the system must validate the message for external user")
+      ThreadReferencePage.getMessageText should include("Message not available")
+
     }
 
   }

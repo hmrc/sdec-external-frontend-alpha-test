@@ -32,22 +32,34 @@ import scala.xml.NodeSeq.Empty.text
 object ThreadReferencePage extends BasePage {
 
   val headingLocator: By              = By.xpath("/html/body/header/div[1]/div/div[2]/a")
-  val threadReferenceLocator: By      = By.cssSelector("#main-content > div > div > form > fieldset > legend > h1")
+  val threadReferenceLocator: By      = By.cssSelector("#main-content h1.govuk-fieldset__heading")
   val threadReferenceInputLocator: By = By.id("thread-reference")
-  val continueButtonLocator: By       = By.xpath("//*[@id=\"main-content\"]/div/div/form/button")
-  val errorTitleLocator: By           = By.xpath("//*[@id=\"main-content\"]/div/div/form/div[1]/div/h2")
+  val continueButtonLocator: By       = By.cssSelector("#main-content button.govuk-button")
+  val errorTitleLocator: By           = By.cssSelector("#main-content form div.govuk-error-summary h2.govuk-error-summary__title")
   val threadReferenceErrorLocator: By = By.xpath("//*[@id=\"main-content\"]/div/div/form/div[1]/div/div/ul/li[1]/a")
-  val threadRefSuccessful: By         = By.xpath("//*[@id=\"main-content\"]/div/div/div/div")
-  val threadRefUnsuccessful: By       = By.cssSelector("#thread-reference-error")
-  val redirectPage: By                = By.xpath("//*[@id=\"main-content\"]/div/div/h1")
+  val threadRefSuccessful: By         = By.cssSelector("#main-content span.govuk-caption-l")
+  val threadRefUnsuccessful: By       = By.id("thread-reference-error")
+  val redirectPage: By                = By.cssSelector("#main-content h1.govuk-heading-l")
   val threadRefButton: By             = By.cssSelector("#main-content > div > div > a:nth-child(2)")
-  val threadRefPageName: By           = By.xpath("//*[@id=\"main-content\"]/div/div/h1")
+  val threadRefPageName: By           = By.cssSelector("#main-content h1.govuk-heading-l")
   val acceptCookiesButton: By         = By.name("cookies")
+  val externalUserNameLocator: By     = By.cssSelector("#main-content h1")
+  val messageLocator: By              = By.cssSelector("#main-content ol.hmrc-timeline  li.hmrc-timeline__event p")
+  val createdDateLocator: By          = By.cssSelector("#main-content ol.hmrc-timeline li.hmrc-timeline__event time")
 
   private val wait = new WebDriverWait(driver, Duration.ofSeconds(20))
 
   def getCaptionText: String =
     wait.until(ExpectedConditions.visibilityOfElementLocated(headingLocator)).getText.trim
+
+  def getExternalUserNameText: String =
+    wait.until(ExpectedConditions.visibilityOfElementLocated(externalUserNameLocator)).getText.trim
+
+  def getMessageText: String =
+    wait.until(ExpectedConditions.visibilityOfElementLocated(messageLocator)).getText.trim
+
+  def getCreatedDateText: String =
+    wait.until(ExpectedConditions.visibilityOfElementLocated(createdDateLocator)).getText.trim
 
   def getRedirectPageText: String =
     wait.until(ExpectedConditions.visibilityOfElementLocated(redirectPage)).getText.trim
