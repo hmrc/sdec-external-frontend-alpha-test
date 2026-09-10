@@ -16,36 +16,30 @@
 
 package uk.gov.hmrc.ui.pages
 
-import org.openqa.selenium.{By, JavascriptExecutor, WebDriver, WebElement}
-import org.scalatest.matchers.should.Matchers
-import uk.gov.hmrc.selenium.component.PageObject
+import org.openqa.selenium.support.ui.{ExpectedConditions, WebDriverWait}
+import org.openqa.selenium.{By, WebElement}
+import uk.gov.hmrc.ui.pages.AuthLoginPage.driver
 
 import java.time.Duration
-import org.openqa.selenium.support.ui.{ExpectedConditions, WebDriverWait}
-import org.scalactic.Prettifier.default
-import uk.gov.hmrc.ui.pages.AuthLoginPage.driver
-import uk.gov.hmrc.ui.pages.ThreadReferencePage
-
 import scala.jdk.CollectionConverters.*
-import scala.xml.NodeSeq.Empty.text
 
 object ThreadReferencePage extends BasePage {
 
-  val headingLocator: By              = By.xpath("/html/body/header/div[1]/div/div[2]/a")
-  val threadReferenceLocator: By      = By.cssSelector("#main-content h1.govuk-fieldset__heading")
+  val headingLocator:              By = By.xpath("/html/body/header/div[1]/div/div[2]/a")
+  val threadReferenceLocator:      By = By.cssSelector("#main-content h1.govuk-fieldset__heading")
   val threadReferenceInputLocator: By = By.id("thread-reference")
-  val continueButtonLocator: By       = By.cssSelector("#main-content button.govuk-button")
-  val errorTitleLocator: By           = By.cssSelector("#main-content form div.govuk-error-summary h2.govuk-error-summary__title")
+  val continueButtonLocator:       By = By.cssSelector("#main-content button.govuk-button")
+  val errorTitleLocator: By = By.cssSelector("#main-content form div.govuk-error-summary h2.govuk-error-summary__title")
   val threadReferenceErrorLocator: By = By.xpath("//*[@id=\"main-content\"]/div/div/form/div[1]/div/div/ul/li[1]/a")
-  val threadRefSuccessful: By         = By.cssSelector("#main-content span.govuk-caption-l")
-  val threadRefUnsuccessful: By       = By.id("thread-reference-error")
-  val redirectPage: By                = By.cssSelector("#main-content h1.govuk-heading-l")
-  val threadRefButton: By             = By.cssSelector("#main-content > div > div > a:nth-child(2)")
-  val threadRefPageName: By           = By.cssSelector("#main-content h1.govuk-heading-l")
-  val acceptCookiesButton: By         = By.name("cookies")
-  val externalUserNameLocator: By     = By.cssSelector("#main-content h1")
-  val messageLocator: By              = By.cssSelector("#main-content ol.hmrc-timeline  li.hmrc-timeline__event p")
-  val createdDateLocator: By          = By.cssSelector("#main-content ol.hmrc-timeline li.hmrc-timeline__event time")
+  val threadRefSuccessful:         By = By.cssSelector("#main-content span.govuk-caption-l")
+  val threadRefUnsuccessful:       By = By.id("thread-reference-error")
+  val redirectPage:                By = By.cssSelector("#main-content h1.govuk-heading-l")
+  val threadRefButton:             By = By.cssSelector("#main-content > div > div > a:nth-child(2)")
+  val threadRefPageName:           By = By.cssSelector("#main-content h1.govuk-heading-l")
+  val acceptCookiesButton:         By = By.name("cookies")
+  val externalUserNameLocator:     By = By.cssSelector("#main-content h1")
+  val messageLocator:              By = By.cssSelector("#main-content ol.hmrc-timeline  li.hmrc-timeline__event p")
+  val createdDateLocator:          By = By.cssSelector("#main-content ol.hmrc-timeline li.hmrc-timeline__event time")
 
   private val wait = new WebDriverWait(driver, Duration.ofSeconds(20))
 

@@ -16,14 +16,12 @@
 
 package uk.gov.hmrc.ui.pages
 
-import org.openqa.selenium.support.ui.{FluentWait, Wait}
-import org.openqa.selenium.{By, JavascriptExecutor, WebDriver}
+import org.openqa.selenium.{By, JavascriptExecutor}
 import org.scalatest.matchers.should.Matchers
 import uk.gov.hmrc.selenium.component.PageObject
 import uk.gov.hmrc.selenium.webdriver.Driver
 
 import java.lang
-import java.time.Duration
 import scala.jdk.CollectionConverters.*
 
 trait BasePage extends Matchers with PageObject {

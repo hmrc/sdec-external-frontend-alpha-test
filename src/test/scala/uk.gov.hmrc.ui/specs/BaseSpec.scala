@@ -33,7 +33,6 @@ trait BaseSpec
   override def beforeAll(): Unit = {
     startBrowser()
     Driver.instance.manage().deleteAllCookies()
-
   }
 
   override def afterAll(): Unit =
