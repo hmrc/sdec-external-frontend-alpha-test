@@ -9,7 +9,4 @@ if [ -z "$BROWSER_TYPE" ]; then
     echo ""
 fi
 
-# Scalafmt checks have been separated from the test command to avoid OutOfMemoryError in Jenkins
-sbt scalafmtCheckAll scalafmtSbtCheck
-
-sbt clean -Dbrowser="chrome" -Denvironment="local" -Dbrowser.option.headless=false "testOnly uk.gov.hmrc.ui.specs.* -- -n AcceptanceTests" testReport
+sbt scalafmtCheckAll scalafmtSbtCheck clean -Dbrowser="chrome" -Denvironment="local" -Dbrowser.option.headless=false "testOnly uk.gov.hmrc.ui.specs.* -- -n AcceptanceTests" testReport

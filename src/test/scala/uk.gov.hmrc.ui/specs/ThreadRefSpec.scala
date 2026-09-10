@@ -16,9 +16,7 @@
 
 package uk.gov.hmrc.ui.specs
 
-import org.openqa.selenium.support.ui.{ExpectedConditions, WebDriverWait}
 import org.scalatest.featurespec.AnyFeatureSpec
-
 import uk.gov.hmrc.ui.pages.AuthLoginPage
 import uk.gov.hmrc.ui.pages.ThreadReferencePage
 import uk.gov.hmrc.ui.specs.tags.AcceptanceTests
@@ -33,7 +31,7 @@ class ThreadRefSpec extends BaseSpec {
       AuthLoginPage.login()
 
       When("the Enter thread reference page loads")
-      ThreadReferencePage.getThreadRefPageName         should include("Share Files Securely with HMRC")
+      ThreadReferencePage.getThreadRefPageName should include("Share Files Securely with HMRC")
       ThreadReferencePage.selectAcceptCookiesButton()
       ThreadReferencePage.isThreadRefButtonDisplayed shouldBe true
       ThreadReferencePage.isThreadRefButtonEnabled   shouldBe true
