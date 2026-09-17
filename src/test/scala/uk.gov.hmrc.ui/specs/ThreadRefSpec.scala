@@ -41,8 +41,8 @@ class ThreadRefSpec extends BaseSpec {
       ThreadReferencePage.getThreadReferenceText          shouldBe "Enter the thread reference number"
       ThreadReferencePage.isThreadReferenceInputDisplayed shouldBe true
 
-      And("the system must display the service caption")
-      ThreadReferencePage.getCaptionText shouldBe "Share Files Securely with HMRC"
+      And("the system must display the service name")
+      ThreadReferencePage.getServiceNameText shouldBe "Share Files Securely with HMRC"
 
       And("the system must display a continue button")
       ThreadReferencePage.isContinueButtonDisplayed shouldBe true
