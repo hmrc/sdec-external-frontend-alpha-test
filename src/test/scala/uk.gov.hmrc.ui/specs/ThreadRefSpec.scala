@@ -32,7 +32,7 @@ class ThreadRefSpec extends BaseSpec {
       AuthLoginPage.selectConfidenceLevel()
       AuthLoginPage.enterUserName("John Smith")
       AuthLoginPage.enterEmailAddress("some@example.com")
-      AuthLoginPage.enterNinoValue("AB123456C")
+      AuthLoginPage.enterNino("AB123456C")
       AuthLoginPage.continue()
 
       When("the Enter thread reference page loads")
@@ -66,7 +66,7 @@ class ThreadRefSpec extends BaseSpec {
       AuthLoginPage.selectConfidenceLevel()
       AuthLoginPage.enterUserName("John Smith")
       AuthLoginPage.enterEmailAddress("some@example.com")
-      AuthLoginPage.enterNinoValue("AB123456C")
+      AuthLoginPage.enterNino("AB123456C")
       AuthLoginPage.continue()
 
       When("the user navigates to the thread reference page")
@@ -89,7 +89,7 @@ class ThreadRefSpec extends BaseSpec {
       AuthLoginPage.selectConfidenceLevel()
       AuthLoginPage.enterUserName("John Smith")
       AuthLoginPage.enterEmailAddress("some@example.com")
-      AuthLoginPage.enterNinoValue("AB123456C")
+      AuthLoginPage.enterNino("AB123456C")
       AuthLoginPage.continue()
 
       When("the user navigates to the thread reference page")
@@ -113,7 +113,7 @@ class ThreadRefSpec extends BaseSpec {
       AuthLoginPage.selectConfidenceLevel()
       AuthLoginPage.enterUserName("John Smith")
       AuthLoginPage.enterEmailAddress("some@example.com")
-      AuthLoginPage.enterNinoValue("AB123456C")
+      AuthLoginPage.enterNino("AB123456C")
       AuthLoginPage.continue()
 
       When("the user navigates to the thread reference page and keys the thread reference number")
@@ -137,7 +137,7 @@ class ThreadRefSpec extends BaseSpec {
       AuthLoginPage.selectConfidenceLevel()
       AuthLoginPage.enterUserName("John Smith")
       AuthLoginPage.enterEmailAddress("some@example.com")
-      AuthLoginPage.enterNinoValue("AB123456C")
+      AuthLoginPage.enterNino("AB123456C")
       AuthLoginPage.continue()
 
       When("the page loads with the url by authenticated user")
@@ -168,7 +168,7 @@ class ThreadRefSpec extends BaseSpec {
       AuthLoginPage.selectConfidenceLevel()
       AuthLoginPage.enterUserName("John Smith")
       AuthLoginPage.enterEmailAddress("some@example.com")
-      AuthLoginPage.enterNinoValue("AB123456C")
+      AuthLoginPage.enterNino("AB123456C")
       AuthLoginPage.continue()
 
       When("the user navigates to the thread reference page and keys the thread reference number")
@@ -201,7 +201,7 @@ class ThreadRefSpec extends BaseSpec {
       AuthLoginPage.login()
       AuthLoginPage.selectConfidenceLevel()
       AuthLoginPage.enterEmailAddress("some@example.com")
-      AuthLoginPage.enterNinoValue("AB123456C")
+      AuthLoginPage.enterNino("AB123456C")
       AuthLoginPage.continue()
 
       When("the user navigates to the thread reference page and keys the thread reference number")
@@ -215,10 +215,9 @@ class ThreadRefSpec extends BaseSpec {
       ThreadReferencePage.isErrorTitleDisplayed shouldBe true
 
       And("the system must display the error message")
-      ThreadReferencePage.getErrorTitleText   should include("There is a problem")
-      ThreadReferencePage.getErrorMessageText should include(
+      ThreadReferencePage.getErrorTitleText     should include("There is a problem")
+      ThreadReferencePage.getErrorMessageText shouldBe
         "We are unable to provide access to this thread at this time. If you believe this is an error or need further assistance, please contact the Support Team for help."
-      )
 
     }
 

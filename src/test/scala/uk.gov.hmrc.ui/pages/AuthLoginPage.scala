@@ -57,7 +57,7 @@ object AuthLoginPage extends BrowserDriver with BasePage {
   def getConfidenceLevel: WebElement =
     webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(Fields.confidenceLevel))
 
-  def getNinoValue: WebElement =
+  def getNino: WebElement =
     webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(Fields.ninoInput))
 
   def getUserName: WebElement =
@@ -66,20 +66,14 @@ object AuthLoginPage extends BrowserDriver with BasePage {
   def getEmail: WebElement =
     webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(Fields.emailAddress))
 
-  def selectConfidenceLevel(): Unit =
-    try {
-      val select = new Select(getConfidenceLevel)
-      select.getOptions.asScala.toList
-      select.selectByVisibleText("200")
+  def selectConfidenceLevel(): Unit = {
+    val select = new Select(getConfidenceLevel)
+    select.getOptions.asScala.toList
+    select.selectByVisibleText("200")
+  }
 
-    } catch {
-      case e: Exception =>
-        println(s"Error: ${e.getMessage}")
-        e.printStackTrace()
-    }
-
-  def enterNinoValue(value: String): Unit = {
-    val input = getNinoValue
+  def enterNino(value: String): Unit = {
+    val input = getNino
     input.clear()
     input.sendKeys(value)
   }
