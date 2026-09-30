@@ -16,11 +16,13 @@
 
 package uk.gov.hmrc.ui.pages
 
+import org.openqa.selenium.support.ui.WebDriverWait
 import org.openqa.selenium.{By, JavascriptExecutor}
 import org.scalatest.matchers.should.Matchers
 import uk.gov.hmrc.selenium.component.PageObject
 import uk.gov.hmrc.selenium.webdriver.Driver
-
+import uk.gov.hmrc.ui.pages.AuthLoginPage.driver
+import java.time.Duration
 import java.lang
 import scala.jdk.CollectionConverters.*
 
@@ -47,4 +49,6 @@ trait BasePage extends Matchers with PageObject {
       s"Expected element with locator [$locator] to be present, but none was found"
     )
   }
+
+  def webDriverWait = new WebDriverWait(driver, Duration.ofSeconds(15))
 }

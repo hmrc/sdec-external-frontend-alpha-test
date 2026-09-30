@@ -29,6 +29,11 @@ class ThreadRefSpec extends BaseSpec {
 
       Given("User logs in")
       AuthLoginPage.login()
+      AuthLoginPage.selectConfidenceLevel()
+      AuthLoginPage.enterUserName("John Smith")
+      AuthLoginPage.enterEmailAddress("some@example.com")
+      AuthLoginPage.enterNino("AB123456C")
+      AuthLoginPage.continue()
 
       When("the Enter thread reference page loads")
       ThreadReferencePage.getThreadRefPageName should include("Share Files Securely with HMRC")
@@ -54,10 +59,15 @@ class ThreadRefSpec extends BaseSpec {
       ThreadReferencePage.getContinueButtonText shouldBe "Continue"
     }
 
-    Scenario("Empty field validation", AcceptanceTests) {
+    Scenario("Empty field validation of Thread Reference Number", AcceptanceTests) {
 
       Given("User logs in")
       AuthLoginPage.login()
+      AuthLoginPage.selectConfidenceLevel()
+      AuthLoginPage.enterUserName("John Smith")
+      AuthLoginPage.enterEmailAddress("some@example.com")
+      AuthLoginPage.enterNino("AB123456C")
+      AuthLoginPage.continue()
 
       When("the user navigates to the thread reference page")
       ThreadReferencePage.selectThreadRefButton()
@@ -72,10 +82,15 @@ class ThreadRefSpec extends BaseSpec {
       ThreadReferencePage.getThreadReferenceText should include("Enter the thread reference number")
     }
 
-    Scenario("Invalid Format", AcceptanceTests) {
+    Scenario("Invalid Format Thread Reference Number Validation", AcceptanceTests) {
 
       Given("User logs in")
       AuthLoginPage.login()
+      AuthLoginPage.selectConfidenceLevel()
+      AuthLoginPage.enterUserName("John Smith")
+      AuthLoginPage.enterEmailAddress("some@example.com")
+      AuthLoginPage.enterNino("AB123456C")
+      AuthLoginPage.continue()
 
       When("the user navigates to the thread reference page")
       ThreadReferencePage.selectThreadRefButton()
@@ -91,27 +106,15 @@ class ThreadRefSpec extends BaseSpec {
 
     }
 
-    Scenario("Input field rules successful validation", AcceptanceTests) {
-
-      Given("User logs in")
-      AuthLoginPage.login()
-
-      When("the user navigates to the thread reference page and keys the thread reference number")
-      ThreadReferencePage.selectThreadRefButton()
-      ThreadReferencePage.enterThreadReference("THREAD1000AA")
-
-      And("the user clicks Continue button")
-      ThreadReferencePage.selectContinueButton()
-
-      Then("the system must validate the manual entry with 12 characters")
-      ThreadReferencePage.isThreadRefSuccessful should include("THREAD1000AA")
-
-    }
-
     Scenario("Input field rules error validation", AcceptanceTests) {
 
       Given("User logs in")
       AuthLoginPage.login()
+      AuthLoginPage.selectConfidenceLevel()
+      AuthLoginPage.enterUserName("John Smith")
+      AuthLoginPage.enterEmailAddress("some@example.com")
+      AuthLoginPage.enterNino("AB123456C")
+      AuthLoginPage.continue()
 
       When("the user navigates to the thread reference page and keys the thread reference number")
       ThreadReferencePage.selectThreadRefButton()
@@ -131,6 +134,11 @@ class ThreadRefSpec extends BaseSpec {
 
       Given("User logs in")
       AuthLoginPage.login()
+      AuthLoginPage.selectConfidenceLevel()
+      AuthLoginPage.enterUserName("John Smith")
+      AuthLoginPage.enterEmailAddress("some@example.com")
+      AuthLoginPage.enterNino("AB123456C")
+      AuthLoginPage.continue()
 
       When("the page loads with the url by authenticated user")
       ThreadReferencePage.selectThreadRefButton()
@@ -147,17 +155,21 @@ class ThreadRefSpec extends BaseSpec {
       When("the page loads with the given url by unauthenticated user")
 
       Then("the url must redirect the authorisation page")
-
       ThreadReferencePage.getRedirectPageText should include("Authority Wizard")
     }
 
     Scenario(
-      "External user logs in, provides thread reference number and validates details in thread view",
+      "Successful login with correct thread reference number and validates details in thread view",
       AcceptanceTests
     ) {
 
       Given("User logs in")
       AuthLoginPage.login()
+      AuthLoginPage.selectConfidenceLevel()
+      AuthLoginPage.enterUserName("John Smith")
+      AuthLoginPage.enterEmailAddress("some@example.com")
+      AuthLoginPage.enterNino("AB123456C")
+      AuthLoginPage.continue()
 
       When("the user navigates to the thread reference page and keys the thread reference number")
       ThreadReferencePage.selectThreadRefButton()
@@ -166,7 +178,7 @@ class ThreadRefSpec extends BaseSpec {
       And("the user clicks Continue button")
       ThreadReferencePage.selectContinueButton()
 
-      Then("the system must validate the manual entry with 12 characters")
+      Then("the system must validate Thread Reference Number")
       ThreadReferencePage.isThreadRefSuccessful should include("THREAD1000AA")
 
       And("the system must validate the name of external user")
@@ -175,15 +187,22 @@ class ThreadRefSpec extends BaseSpec {
       And("the system must validate the message for external user")
       ThreadReferencePage.getMessageText should include("Enter default response message")
 
+      And("the user must be able to respond to the message sent by HMRC user")
+      ThreadReferencePage.getReplyButtonText shouldBe "Reply"
+      ThreadReferencePage.selectReplyButton()
     }
 
     Scenario(
-      "External user logs in, provides thread reference number and validates missing data in thread view",
+      "Successful login with incorrect thread reference number and error message is displayed",
       AcceptanceTests
     ) {
 
       Given("User logs in")
       AuthLoginPage.login()
+      AuthLoginPage.selectConfidenceLevel()
+      AuthLoginPage.enterEmailAddress("some@example.com")
+      AuthLoginPage.enterNino("AB123456C")
+      AuthLoginPage.continue()
 
       When("the user navigates to the thread reference page and keys the thread reference number")
       ThreadReferencePage.selectThreadRefButton()
@@ -192,14 +211,13 @@ class ThreadRefSpec extends BaseSpec {
       And("the user clicks Continue button")
       ThreadReferencePage.selectContinueButton()
 
-      Then("the system must validate the manual entry with 12 characters")
-      ThreadReferencePage.isThreadRefSuccessful should include("THREAD2000BB")
+      Then("the system must validate the Thread Reference number")
+      ThreadReferencePage.isErrorTitleDisplayed shouldBe true
 
-      And("the system must validate the name of external user")
-      ThreadReferencePage.getExternalUserNameText should include("Name not available")
-
-      And("the system must validate the message for external user")
-      ThreadReferencePage.getMessageText should include("Message not available")
+      And("the system must display the error message")
+      ThreadReferencePage.getErrorTitleText     should include("There is a problem")
+      ThreadReferencePage.getErrorMessageText shouldBe
+        "We are unable to provide access to this thread at this time. If you believe this is an error or need further assistance, please contact the Support Team for help."
 
     }
 
