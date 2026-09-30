@@ -35,7 +35,7 @@ object ThreadReferencePage extends BasePage {
   val errorMessageLocator:         By = By.cssSelector("div.govuk-error-summary__body ul.govuk-error-summary__list li")
   val threadReferenceErrorLocator: By = By.xpath("//*[@id=\"main-content\"]/div/div/form/div[1]/div/div/ul/li[1]/a")
   val threadRefSuccessful:         By =
-    By.xpath("//*[@id='main-content']//span[@class='govuk-caption-l' and contains(text(), 'THREAD1000AA')]")
+    By.xpath("//span[contains(text(), 'THREAD1000AA')]")
   val threadRefUnsuccessful:   By = By.id("thread-reference-error")
   val redirectPage:            By = By.xpath("//h1[@class='govuk-heading-l' and contains(text(), 'Authority Wizard')]")
   val threadRefButton:         By = By.cssSelector("#main-content > div > div > a:nth-child(2)")
