@@ -31,8 +31,8 @@ class ThreadRefSpec extends BaseSpec {
       AuthLoginPage.login()
       AuthLoginPage.selectConfidenceLevel()
       AuthLoginPage.enterUserName("John Smith")
-      AuthLoginPage.enterEmailAddress("some@example.com")
-      AuthLoginPage.enterNino("AB123456C")
+      AuthLoginPage.enterEmailAddress("user@test.com")
+      AuthLoginPage.enterNino("WM111111D")
       AuthLoginPage.continue()
 
       When("the Enter thread reference page loads")
@@ -65,8 +65,8 @@ class ThreadRefSpec extends BaseSpec {
       AuthLoginPage.login()
       AuthLoginPage.selectConfidenceLevel()
       AuthLoginPage.enterUserName("John Smith")
-      AuthLoginPage.enterEmailAddress("some@example.com")
-      AuthLoginPage.enterNino("AB123456C")
+      AuthLoginPage.enterEmailAddress("user@test.com")
+      AuthLoginPage.enterNino("WM111111D")
       AuthLoginPage.continue()
 
       When("the user navigates to the thread reference page")
@@ -88,8 +88,8 @@ class ThreadRefSpec extends BaseSpec {
       AuthLoginPage.login()
       AuthLoginPage.selectConfidenceLevel()
       AuthLoginPage.enterUserName("John Smith")
-      AuthLoginPage.enterEmailAddress("some@example.com")
-      AuthLoginPage.enterNino("AB123456C")
+      AuthLoginPage.enterEmailAddress("user@test.com")
+      AuthLoginPage.enterNino("WM111111D")
       AuthLoginPage.continue()
 
       When("the user navigates to the thread reference page")
@@ -112,8 +112,8 @@ class ThreadRefSpec extends BaseSpec {
       AuthLoginPage.login()
       AuthLoginPage.selectConfidenceLevel()
       AuthLoginPage.enterUserName("John Smith")
-      AuthLoginPage.enterEmailAddress("some@example.com")
-      AuthLoginPage.enterNino("AB123456C")
+      AuthLoginPage.enterEmailAddress("user@test.com")
+      AuthLoginPage.enterNino("WM111111D")
       AuthLoginPage.continue()
 
       When("the user navigates to the thread reference page and keys the thread reference number")
@@ -136,8 +136,8 @@ class ThreadRefSpec extends BaseSpec {
       AuthLoginPage.login()
       AuthLoginPage.selectConfidenceLevel()
       AuthLoginPage.enterUserName("John Smith")
-      AuthLoginPage.enterEmailAddress("some@example.com")
-      AuthLoginPage.enterNino("AB123456C")
+      AuthLoginPage.enterEmailAddress("user@test.com")
+      AuthLoginPage.enterNino("WM111111D")
       AuthLoginPage.continue()
 
       When("the page loads with the url by authenticated user")
@@ -167,8 +167,8 @@ class ThreadRefSpec extends BaseSpec {
       AuthLoginPage.login()
       AuthLoginPage.selectConfidenceLevel()
       AuthLoginPage.enterUserName("John Smith")
-      AuthLoginPage.enterEmailAddress("some@example.com")
-      AuthLoginPage.enterNino("AB123456C")
+      AuthLoginPage.enterEmailAddress("user@test.com")
+      AuthLoginPage.enterNino("WM111111D")
       AuthLoginPage.continue()
 
       When("the user navigates to the thread reference page and keys the thread reference number")
@@ -185,7 +185,7 @@ class ThreadRefSpec extends BaseSpec {
       ThreadReferencePage.getExternalUserNameText should include("John Smith")
 
       And("the system must validate the message for external user")
-      ThreadReferencePage.getMessageText should include("Enter default response message")
+      ThreadReferencePage.getMessageText should include("Where are the files?")
 
       And("the user must be able to respond to the message sent by HMRC user")
       ThreadReferencePage.getReplyButtonText shouldBe "Reply"
@@ -200,8 +200,9 @@ class ThreadRefSpec extends BaseSpec {
       Given("User logs in")
       AuthLoginPage.login()
       AuthLoginPage.selectConfidenceLevel()
-      AuthLoginPage.enterEmailAddress("some@example.com")
-      AuthLoginPage.enterNino("AB123456C")
+      AuthLoginPage.enterUserName("John Smith")
+      AuthLoginPage.enterEmailAddress("user@test.com")
+      AuthLoginPage.enterNino("WM111111D")
       AuthLoginPage.continue()
 
       When("the user navigates to the thread reference page and keys the thread reference number")
