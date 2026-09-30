@@ -16,25 +16,25 @@
 
 package uk.gov.hmrc.ui.pages
 
-import org.openqa.selenium.By
-import org.openqa.selenium.JavascriptExecutor
-import org.openqa.selenium.support.ui.WebDriverWait
+import org.openqa.selenium.{By, JavascriptExecutor, WebElement}
+import org.openqa.selenium.support.ui.{ExpectedConditions, Select, WebDriverWait}
 import uk.gov.hmrc.ui.conf.TestConfiguration
 import uk.gov.hmrc.ui.driver.BrowserDriver
-
-import java.time.Duration
+import scala.jdk.CollectionConverters.*
 
 object AuthLoginPage extends BrowserDriver with BasePage {
-
-  new WebDriverWait(driver, Duration.ofSeconds(10))
 
   val url:                String = s"${TestConfiguration.url("auth-login-stub")}/gg-sign-in"
   val frontEndUrl:        String = TestConfiguration.url("sdec-external-frontend")
   val threadReferenceUrl: String = "http://localhost:4502/sdec-alpha"
 
   object Fields {
-    val credId:      By = By.id("authorityId")
-    val redirectUrl: By = By.id("redirectionUrl")
+    val credId:          By = By.id("authorityId")
+    val redirectUrl:     By = By.id("redirectionUrl")
+    val userName:        By = By.id("usersName")
+    val emailAddress:    By = By.id("email")
+    val confidenceLevel: By = By.id("confidenceLevel")
+    val ninoInput:       By = By.id("nino")
   }
 
   private val redirectUrls: Map[String, String] = Map(
@@ -48,13 +48,52 @@ object AuthLoginPage extends BrowserDriver with BasePage {
       throw new IllegalArgumentException(s"Unknown redirect page: $page")
     )
 
-  def login(
-    credId: String = "258798531149531"
-  ): Unit = {
+  def login(): Unit = {
     navigateTo(url)
-    sendKeys(Fields.credId, credId)
     sendKeys(Fields.redirectUrl, resolveRedirect("sdec-external-frontend"))
-    continue()
+
+  }
+
+  def getConfidenceLevel: WebElement =
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(Fields.confidenceLevel))
+
+  def getNinoValue: WebElement =
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(Fields.ninoInput))
+
+  def getUserName: WebElement =
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(Fields.userName))
+
+  def getEmail: WebElement =
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(Fields.emailAddress))
+
+  def selectConfidenceLevel(): Unit =
+    try {
+      val select = new Select(getConfidenceLevel)
+      select.getOptions.asScala.toList
+      select.selectByVisibleText("200")
+
+    } catch {
+      case e: Exception =>
+        println(s"Error: ${e.getMessage}")
+        e.printStackTrace()
+    }
+
+  def enterNinoValue(value: String): Unit = {
+    val input = getNinoValue
+    input.clear()
+    input.sendKeys(value)
+  }
+
+  def enterUserName(value: String): Unit = {
+    val input = getUserName
+    input.clear()
+    input.sendKeys(value)
+  }
+
+  def enterEmailAddress(value: String): Unit = {
+    val input = getEmail
+    input.clear()
+    input.sendKeys(value)
   }
 
   def authIdent(

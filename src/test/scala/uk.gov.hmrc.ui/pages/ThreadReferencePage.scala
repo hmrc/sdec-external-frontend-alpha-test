@@ -31,18 +31,19 @@ object ThreadReferencePage extends BasePage {
   val threadReferenceLocator:      By = By.cssSelector("#main-content h1.govuk-fieldset__heading")
   val threadReferenceInputLocator: By = By.id("thread-reference")
   val continueButtonLocator:       By = By.cssSelector("#main-content button.govuk-button")
-  val errorTitleLocator: By = By.cssSelector("#main-content form div.govuk-error-summary h2.govuk-error-summary__title")
+  val errorTitleLocator:           By = By.cssSelector("div.govuk-error-summary h2.govuk-error-summary__title")
+  val errorMessageLocator:         By = By.cssSelector("div.govuk-error-summary__body ul.govuk-error-summary__list li")
   val threadReferenceErrorLocator: By = By.xpath("//*[@id=\"main-content\"]/div/div/form/div[1]/div/div/ul/li[1]/a")
   val threadRefSuccessful:         By = By.cssSelector("#main-content span.govuk-caption-l")
   val threadRefUnsuccessful:       By = By.id("thread-reference-error")
-  val redirectPage:                By = By.cssSelector("#main-content h1.govuk-heading-l")
-  val threadRefButton:             By = By.cssSelector("#main-content > div > div > a:nth-child(2)")
-  val threadRefPageName:           By = By.cssSelector("#main-content h1.govuk-heading-l")
-  val acceptCookiesButton:         By = By.name("cookies")
-  val externalUserNameLocator:     By = By.cssSelector("#main-content h1")
-  val messageLocator:              By = By.cssSelector("#main-content ol.hmrc-timeline  li.hmrc-timeline__event p")
-  val createdDateLocator:          By = By.cssSelector("#main-content ol.hmrc-timeline li.hmrc-timeline__event time")
-
+  val redirectPage:            By = By.xpath("//h1[@class='govuk-heading-l' and contains(text(), 'Authority Wizard')]")
+  val threadRefButton:         By = By.cssSelector("#main-content > div > div > a:nth-child(2)")
+  val threadRefPageName:       By = By.cssSelector("#main-content h1.govuk-heading-l")
+  val acceptCookiesButton:     By = By.name("cookies")
+  val externalUserNameLocator: By = By.cssSelector("#main-content h1")
+  val messageLocator:          By = By.cssSelector("#main-content ol.hmrc-timeline  li.hmrc-timeline__event p")
+  val createdDateLocator:      By = By.cssSelector("#main-content ol.hmrc-timeline li.hmrc-timeline__event time")
+  val replyButtonLocator:      By = By.cssSelector("#main-content a.govuk-button")
   private val wait = new WebDriverWait(driver, Duration.ofSeconds(20))
 
   def getServiceNameText: String =
@@ -69,6 +70,9 @@ object ThreadReferencePage extends BasePage {
   def getThreadReferenceInput: WebElement =
     wait.until(ExpectedConditions.visibilityOfElementLocated(threadReferenceInputLocator))
 
+  def getReplyButton: WebElement =
+    wait.until(ExpectedConditions.visibilityOfElementLocated(replyButtonLocator))
+
   def isThreadReferenceInputDisplayed: Boolean =
     driver.findElements(threadReferenceInputLocator).asScala.nonEmpty &&
       getThreadReferenceInput.isDisplayed
@@ -90,6 +94,12 @@ object ThreadReferencePage extends BasePage {
 
   def getThreadRefButton: WebElement =
     wait.until(ExpectedConditions.visibilityOfElementLocated(threadRefButton))
+
+  def getErrorMessageText: String =
+    wait.until(ExpectedConditions.visibilityOfElementLocated(errorMessageLocator)).getText.trim
+
+  def getErrorTitleText: String =
+    wait.until(ExpectedConditions.visibilityOfElementLocated(errorTitleLocator)).getText.trim
 
   def isThreadRefButtonDisplayed: Boolean =
     driver.findElements(threadRefButton).asScala.nonEmpty &&
@@ -117,15 +127,18 @@ object ThreadReferencePage extends BasePage {
   def getContinueButtonText: String =
     getContinueButton.getText.trim
 
+  def getReplyButtonText: String =
+    getReplyButton.getText.trim
+
   def selectContinueButton(): Unit =
     getContinueButton.click()
+
+  def selectReplyButton(): Unit =
+    getReplyButton.click()
 
   def isErrorTitleDisplayed: Boolean =
     driver.findElements(errorTitleLocator).asScala.nonEmpty &&
       wait.until(ExpectedConditions.visibilityOfElementLocated(errorTitleLocator)).isDisplayed
-
-  def getErrorTitleText: String =
-    wait.until(ExpectedConditions.visibilityOfElementLocated(errorTitleLocator)).getText.trim
 
   def isThreadRefSuccessful: String =
     wait.until(ExpectedConditions.visibilityOfElementLocated(threadRefSuccessful)).getText.trim
