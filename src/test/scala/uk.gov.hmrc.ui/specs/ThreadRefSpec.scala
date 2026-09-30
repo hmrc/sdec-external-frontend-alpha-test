@@ -19,7 +19,7 @@ package uk.gov.hmrc.ui.specs
 import org.scalatest.featurespec.AnyFeatureSpec
 import uk.gov.hmrc.ui.pages.AuthLoginPage
 import uk.gov.hmrc.ui.pages.ThreadReferencePage
-import uk.gov.hmrc.ui.specs.tags.{AcceptanceTests, SoloTests}
+import uk.gov.hmrc.ui.specs.tags.AcceptanceTests
 
 class ThreadRefSpec extends BaseSpec {
 
@@ -194,7 +194,7 @@ class ThreadRefSpec extends BaseSpec {
 
     Scenario(
       "Successful login with incorrect thread reference number and error message is displayed",
-      SoloTests
+      AcceptanceTests
     ) {
 
       Given("User logs in")
