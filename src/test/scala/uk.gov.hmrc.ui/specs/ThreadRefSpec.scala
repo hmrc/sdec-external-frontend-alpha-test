@@ -31,7 +31,7 @@ class ThreadRefSpec extends BaseSpec with TableDrivenPropertyChecks {
       forAll(AuthTestData.userLoginDetails) { (userName, emailAddress, NINO) =>
         Given("User logs in")
         AuthLoginPage.login()
-        AuthLoginPage.selectConfidenceLevel()
+        AuthLoginPage.selectConfidenceLevel("200")
         AuthLoginPage.enterUserName(userName)
         AuthLoginPage.enterEmailAddress(emailAddress)
         AuthLoginPage.enterNino(NINO)
@@ -66,7 +66,7 @@ class ThreadRefSpec extends BaseSpec with TableDrivenPropertyChecks {
       forAll(AuthTestData.userLoginDetails) { (userName, emailAddress, NINO) =>
         Given("User logs in")
         AuthLoginPage.login()
-        AuthLoginPage.selectConfidenceLevel()
+        AuthLoginPage.selectConfidenceLevel("200")
         AuthLoginPage.enterUserName(userName)
         AuthLoginPage.enterEmailAddress(emailAddress)
         AuthLoginPage.enterNino(NINO)
@@ -91,7 +91,7 @@ class ThreadRefSpec extends BaseSpec with TableDrivenPropertyChecks {
       forAll(AuthTestData.userLoginDetails) { (userName, emailAddress, NINO) =>
         Given("User logs in")
         AuthLoginPage.login()
-        AuthLoginPage.selectConfidenceLevel()
+        AuthLoginPage.selectConfidenceLevel("200")
         AuthLoginPage.enterUserName(userName)
         AuthLoginPage.enterEmailAddress(emailAddress)
         AuthLoginPage.enterNino(NINO)
@@ -116,7 +116,7 @@ class ThreadRefSpec extends BaseSpec with TableDrivenPropertyChecks {
       forAll(AuthTestData.userLoginDetails) { (userName, emailAddress, NINO) =>
         Given("User logs in")
         AuthLoginPage.login()
-        AuthLoginPage.selectConfidenceLevel()
+        AuthLoginPage.selectConfidenceLevel("200")
         AuthLoginPage.enterUserName(userName)
         AuthLoginPage.enterEmailAddress(emailAddress)
         AuthLoginPage.enterNino(NINO)
@@ -141,7 +141,7 @@ class ThreadRefSpec extends BaseSpec with TableDrivenPropertyChecks {
       forAll(AuthTestData.userLoginDetails) { (userName, emailAddress, NINO) =>
         Given("User logs in")
         AuthLoginPage.login()
-        AuthLoginPage.selectConfidenceLevel()
+        AuthLoginPage.selectConfidenceLevel("200")
         AuthLoginPage.enterUserName(userName)
         AuthLoginPage.enterEmailAddress(emailAddress)
         AuthLoginPage.enterNino(NINO)
@@ -173,7 +173,7 @@ class ThreadRefSpec extends BaseSpec with TableDrivenPropertyChecks {
       forAll(AuthTestData.userLoginDetails) { (userName, emailAddress, NINO) =>
         Given("User logs in")
         AuthLoginPage.login()
-        AuthLoginPage.selectConfidenceLevel()
+        AuthLoginPage.selectConfidenceLevel("200")
         AuthLoginPage.enterUserName(userName)
         AuthLoginPage.enterEmailAddress(emailAddress)
         AuthLoginPage.enterNino(NINO)
@@ -186,14 +186,16 @@ class ThreadRefSpec extends BaseSpec with TableDrivenPropertyChecks {
         And("the user clicks Continue button")
         ThreadReferencePage.selectContinueButton()
 
-        Then("the system must validate Thread Reference Number")
-        ThreadReferencePage.isThreadRefSuccessful should include("THREAD1000AA")
+        Then("the user navigates to the limited access page due to insufficient verification and matching failure")
+        ThreadReferencePage.getActionRequiredForFullAccessMsgText shouldBe "Action required for full access"
+        ThreadReferencePage.isVerifyIdentityButtonVisible
+        ThreadReferencePage.isContinueWithLimitedAccessLinkEnabled
 
-        And("the system must validate the name of external user")
-        ThreadReferencePage.getExternalUserNameText should include("John Smith")
+        And("the user selects option of Continue with limited access")
+        ThreadReferencePage.selectContinueWithLimitedAccessLink()
 
-        And("the system must validate the message for external user")
-        ThreadReferencePage.getMessageText should include("Where are the files?")
+        Then("User is navigated to limited accessibility page and verifies the limited view message on screen")
+        ThreadReferencePage.getLimitedAccessMessageText shouldBe "This is a limited view of your thread. You can see when HMRC has sent a message and when you have replied, but not message content or attachments"
 
         And("the user must be able to respond to the message sent by HMRC user")
         ThreadReferencePage.getReplyButtonText shouldBe "Reply"
@@ -208,7 +210,7 @@ class ThreadRefSpec extends BaseSpec with TableDrivenPropertyChecks {
       forAll(AuthTestData.userLoginDetails) { (userName, emailAddress, NINO) =>
         Given("User logs in")
         AuthLoginPage.login()
-        AuthLoginPage.selectConfidenceLevel()
+        AuthLoginPage.selectConfidenceLevel("200")
         AuthLoginPage.enterUserName(userName)
         AuthLoginPage.enterEmailAddress(emailAddress)
         AuthLoginPage.enterNino(NINO)
@@ -233,13 +235,31 @@ class ThreadRefSpec extends BaseSpec with TableDrivenPropertyChecks {
     }
 
     Scenario(
-      "High Confidence level with mismatch in the user login details with correct thread reference number and error message displayed",
+      "When user enters confidence level value as 200 with incorrect user details like NINO, user will get respective error message",
+      AcceptanceTests
+    ) {
+      forAll(AuthTestData.userLoginDetails) { (userName, emailAddress, NINO) =>
+        Given("User logs in with incorrect NINO value")
+        AuthLoginPage.login()
+        AuthLoginPage.selectConfidenceLevel("200")
+        AuthLoginPage.enterUserName(userName)
+        AuthLoginPage.enterEmailAddress(emailAddress)
+        AuthLoginPage.enterNino("112")
+        AuthLoginPage.continue()
+
+        Then("user gets error message to supply valid NINO")
+        AuthLoginPage.getErrorMessageText shouldBe "You must supply a valid Nino"
+      }
+    }
+
+    Scenario(
+      "User enters Low Confidence level value as 200 with matching details in the user login details and correct thread reference number, then user navigates to limited acces page",
       AcceptanceTests
     ) {
       forAll(AuthTestData.userLoginDetails) { (userName, emailAddress, NINO) =>
         Given("User logs in")
         AuthLoginPage.login()
-        AuthLoginPage.selectConfidenceLevel()
+        AuthLoginPage.selectConfidenceLevel("200")
         AuthLoginPage.enterUserName(userName)
         AuthLoginPage.enterEmailAddress(emailAddress)
         AuthLoginPage.enterNino(NINO)
@@ -247,69 +267,49 @@ class ThreadRefSpec extends BaseSpec with TableDrivenPropertyChecks {
 
         When("the user navigates to the thread reference page and keys the thread reference number")
         ThreadReferencePage.selectThreadRefButton()
-        ThreadReferencePage.enterThreadReference("THREAD2000BB")
+        ThreadReferencePage.enterThreadReference("THREAD1000AA")
 
         And("the user clicks Continue button")
         ThreadReferencePage.selectContinueButton()
 
-        Then("the system should deny the access to thread")
+        Then("the user navigates to the limited access page due to insufficient verification and matching failure")
+        ThreadReferencePage.getActionRequiredForFullAccessMsgText shouldBe "Action required for full access"
+        ThreadReferencePage.isVerifyIdentityButtonVisible
+        ThreadReferencePage.isContinueWithLimitedAccessLinkEnabled
 
-        And("the system should redirect to Limited Access” error page message")
+        And("the user selects option of Continue with limited access")
+        ThreadReferencePage.selectContinueWithLimitedAccessLink()
+
+        Then("User is navigated to limited accessibility page and verifies the limited view message on screen")
+        ThreadReferencePage.getLimitedAccessMessageText shouldBe "This is a limited view of your thread. You can see when HMRC has sent a message and when you have replied, but not message content or attachments"
 
       }
     }
 
     Scenario(
-      "Low Confidence level with matching details in the user login details with correct thread reference number and error message is displayed",
+      "User enters Low Confidence level value as 200 with matching details in the user login details and incorrect thread reference number, user gets message that he/she can't access thread ",
       AcceptanceTests
     ) {
       forAll(AuthTestData.userLoginDetails) { (userName, emailAddress, NINO) =>
         Given("User logs in")
         AuthLoginPage.login()
-        AuthLoginPage.selectConfidenceLevel()
+        AuthLoginPage.selectConfidenceLevel("200")
         AuthLoginPage.enterUserName(userName)
         AuthLoginPage.enterEmailAddress(emailAddress)
         AuthLoginPage.enterNino(NINO)
         AuthLoginPage.continue()
 
-        When("the user navigates to the thread reference page and keys the thread reference number")
+        When(
+          "the user navigates to the thread reference page and keys the thread reference number he/she is not assigned to"
+        )
         ThreadReferencePage.selectThreadRefButton()
         ThreadReferencePage.enterThreadReference("THREAD2000BB")
 
         And("the user clicks Continue button")
         ThreadReferencePage.selectContinueButton()
 
-        Then("the system should deny the access to thread")
-
-        And("the system should redirect to Limited Access” error page message")
-
-      }
-    }
-
-    Scenario(
-      "Access denied page with ",
-      AcceptanceTests
-    ) {
-      forAll(AuthTestData.userLoginDetails) { (userName, emailAddress, NINO) =>
-        Given("User logs in")
-        AuthLoginPage.login()
-        AuthLoginPage.selectConfidenceLevel()
-        AuthLoginPage.enterUserName(userName)
-        AuthLoginPage.enterEmailAddress(emailAddress)
-        AuthLoginPage.enterNino(NINO)
-        AuthLoginPage.continue()
-
-        When("the user navigates to the thread reference page and keys the thread reference number")
-        ThreadReferencePage.selectThreadRefButton()
-        ThreadReferencePage.enterThreadReference("THREAD2000BB")
-
-        And("the user clicks Continue button")
-        ThreadReferencePage.selectContinueButton()
-
-        Then("the system should deny the access to thread")
-
-        And("the system should redirect to Limited Access” error page message")
-
+        Then("verifies that user has no access to the thread provided")
+        ThreadReferencePage.getNoThreadAccessMessageText shouldBe "We are unable to provide access to this thread at this time. If you believe this is an error or need further assistance, please contact the Support Team for help."
       }
     }
   }
