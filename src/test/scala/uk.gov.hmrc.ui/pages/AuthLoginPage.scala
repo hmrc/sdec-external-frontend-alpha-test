@@ -20,7 +20,6 @@ import org.openqa.selenium.{By, JavascriptExecutor, WebElement}
 import org.openqa.selenium.support.ui.{ExpectedConditions, Select, WebDriverWait}
 import uk.gov.hmrc.ui.conf.TestConfiguration
 import uk.gov.hmrc.ui.driver.BrowserDriver
-
 import scala.jdk.CollectionConverters.*
 
 object AuthLoginPage extends BrowserDriver with BasePage {
