@@ -24,9 +24,10 @@ import scala.jdk.CollectionConverters.*
 
 object AuthLoginPage extends BrowserDriver with BasePage {
 
-  val url:                String = s"${TestConfiguration.url("auth-login-stub")}/gg-sign-in"
-  val frontEndUrl:        String = TestConfiguration.url("sdec-external-frontend")
-  val threadReferenceUrl: String = "http://localhost:4502/sdec-alpha"
+  val url:                 String = s"${TestConfiguration.url("auth-login-stub")}/gg-sign-in"
+  val frontEndUrl:         String = TestConfiguration.url("sdec-external-frontend")
+  val threadReferenceUrl:  String = "http://localhost:4502/sdec-alpha"
+  val errorMessageLocator: By     = By.cssSelector("#inputForm  div.govuk-error-summary  a")
 
   object Fields {
     val credId:          By = By.id("authorityId")
@@ -66,10 +67,13 @@ object AuthLoginPage extends BrowserDriver with BasePage {
   def getEmail: WebElement =
     webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(Fields.emailAddress))
 
-  def selectConfidenceLevel(): Unit = {
+  def getErrorMessageText: String =
+    webDriverWait.until(ExpectedConditions.visibilityOfElementLocated(errorMessageLocator)).getText.trim
+
+  def selectConfidenceLevel(confidenceLevelValue: String): Unit = {
     val select = new Select(getConfidenceLevel)
     select.getOptions.asScala.toList
-    select.selectByVisibleText("200")
+    select.selectByVisibleText(confidenceLevelValue)
   }
 
   def enterNino(value: String): Unit = {
@@ -92,6 +96,7 @@ object AuthLoginPage extends BrowserDriver with BasePage {
 
   def authIdent(
   ): Unit = {
+    navigateTo(url)
     val jsExecutor = driver.asInstanceOf[JavascriptExecutor]
     driver.manage().deleteAllCookies()
     jsExecutor.executeScript("window.localStorage.clear();")

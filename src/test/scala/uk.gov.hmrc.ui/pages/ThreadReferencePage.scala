@@ -44,10 +44,22 @@ object ThreadReferencePage extends BasePage {
   val messageLocator:          By = By.cssSelector("#main-content ol.hmrc-timeline  li.hmrc-timeline__event p")
   val createdDateLocator:      By = By.cssSelector("#main-content ol.hmrc-timeline li.hmrc-timeline__event time")
   val replyButtonLocator:      By = By.cssSelector("#main-content a.govuk-button")
+  val actionRequiredForFullAccessMsgLocator: By = By.cssSelector("#main-content  h1")
+  val verifyIdentityButtonLocator:           By = By.cssSelector("#main-content a.govuk-button")
+  val continueWithLimitedAccessLinkLocator:  By = By.cssSelector("#main-content a.govuk-link")
+  val limitedAccessMessageLocator:           By = By.cssSelector("#main-content  p")
+  val noThreadAccessMessageLocator:          By = By.cssSelector("#main-content div.govuk-error-summary  a")
+
   private val wait = new WebDriverWait(driver, Duration.ofSeconds(20))
 
   def getServiceNameText: String =
     wait.until(ExpectedConditions.visibilityOfElementLocated(serviceNameLocator)).getText.trim
+
+  def getNoThreadAccessMessageText: String =
+    wait.until(ExpectedConditions.visibilityOfElementLocated(noThreadAccessMessageLocator)).getText.trim
+
+  def getLimitedAccessMessageText: String =
+    wait.until(ExpectedConditions.visibilityOfElementLocated(limitedAccessMessageLocator)).getText.trim
 
   def getExternalUserNameText: String =
     wait.until(ExpectedConditions.visibilityOfElementLocated(externalUserNameLocator)).getText.trim
@@ -88,6 +100,24 @@ object ThreadReferencePage extends BasePage {
 
   def getContinueButton: WebElement =
     wait.until(ExpectedConditions.visibilityOfElementLocated(continueButtonLocator))
+
+  def getActionRequiredForFullAccessMsgText: String =
+    wait.until(ExpectedConditions.visibilityOfElementLocated(actionRequiredForFullAccessMsgLocator)).getText.trim
+
+  def verifyIdentityButtonElement: WebElement =
+    wait.until(ExpectedConditions.visibilityOfElementLocated(verifyIdentityButtonLocator))
+
+  def isVerifyIdentityButtonVisible: Boolean =
+    verifyIdentityButtonElement.isDisplayed
+
+  def isContinueWithLimitedAccessLinkEnabled: Boolean =
+    continueWithLimitedAccessLinkElement.isEnabled
+
+  def selectContinueWithLimitedAccessLink(): Unit =
+    continueWithLimitedAccessLinkElement.click()
+
+  def continueWithLimitedAccessLinkElement: WebElement =
+    wait.until(ExpectedConditions.visibilityOfElementLocated(continueWithLimitedAccessLinkLocator))
 
   def getAcceptCookiesButton: WebElement =
     wait.until(ExpectedConditions.visibilityOfElementLocated(acceptCookiesButton))
